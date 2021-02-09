@@ -10,20 +10,23 @@ default: help
 help:
 	clear
 	@ echo 'help:'
-	@ echo 'make NUMBER (step number):'
-	@ echo '1	- check if "loop" module loaded'
-	@ echo '2	- load "loop" module'
-	@ echo '3	- create image files'
-	@ echo '4	- connect image files'
+	@ echo 'make NUMBER/COMMAND:'
+	@ echo '1/lsmod		- check if "loop" module loaded'
+	@ echo '2/modprobe	- load "loop" module'
+	@ echo '3/dd		- create image files'
+	@ echo '4/losetup	- connect image files'
 	@ echo ''
 
-1:
+1: lsmod
+lsmod:
 	lsmod | grep loop
 
-2:
+2: modprobe
+modprobe:
 	-modprobe -r loop && modprobe loop max_part=63
 
-3:
+3: dd
+dd:
 	-mkdir -v ../$(MD-DIR-NAME)
 	-for COUNT in {1..$(MD-FILES-NUMBER)}; do \
 		echo $(MD-FILES-NAME)$$COUNT; \
@@ -32,8 +35,10 @@ help:
 	done
 	ls -la ../$(MD-DIR-NAME)
 
-4:
+4: losetup
+losetup:
 	-for COUNT in {1..$(MD-FILES-NUMBER)}; do \
 		losetup /dev/loop$$COUNT ../$(MD-DIR-NAME)/$(MD-FILES-NAME)$$COUNT.img; \
 	done
 	losetup -a
+
