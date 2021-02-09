@@ -1,7 +1,10 @@
 ## links:
 ## https://wiki.gentoo.org/wiki/LVM#Experimenting_with_LVM
 
-#VAR-NAME: var-data
+MD-DIR-NAME=1-md
+MD-FILES-NUMBER=5
+MD-FILES-NAME=disk
+MD-FILES-SIZE=2097152
 
 default: help
 help:
@@ -10,6 +13,7 @@ help:
 #	@ echo 'help 	 				- show help message'
 	@ echo '1 / loop-module_check	- check if "loop" module loaded'
 	@ echo '2 / loop-module_load	- load "loop" module'
+	@ echo '3 / create_img_files	- creage image files'
 	@ echo ''
 
 1: loop-module_check
@@ -19,4 +23,14 @@ loop-module_check:
 2: loop-module_load
 loop-module_load:
 	-modprobe -r loop && modprobe loop max_part=63
+
+3: create_img_files
+create_img_files:
+	-mkdir -v ../$(MD-DIR-NAME)
+	-for COUNT in {1..$(MD-FILES-NUMBER)}; do \
+		echo $(MD-FILES-NAME)$$COUNT; \
+		dd if=/dev/null of=../$(MD-DIR-NAME)/$(MD-FILES-NAME)$$COUNT.img bs=1024 seek=$(MD-FILES-SIZE); \
+		echo ""; \
+	done
+	-ls -la ../$(MD-DIR-NAME)
 
