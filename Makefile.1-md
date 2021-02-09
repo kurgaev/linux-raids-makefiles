@@ -1,9 +1,6 @@
 ## links:
 ## https://wiki.gentoo.org/wiki/LVM#Experimenting_with_LVM
 
-COLOR='\033[1;32m'	# green
-NOCOLOR='\033[0m'
-
 MD-DIR-NAME=1-md
 MD-FILES-NUMBER=5
 MD-FILES-NAME=disk
@@ -22,34 +19,25 @@ help:
 
 1: lsmod
 lsmod:
-#	@ echo $(RED)'[>>] lsmod | grep loop'
-#	@ printf "$(COLOR)  $(NOCOLOR)\n"
-	@ printf "$(COLOR) lsmod | grep loop $(NOCOLOR)\n"
 	lsmod | grep loop
 
 2: modprobe
 modprobe:
-	@ printf "$(COLOR) modprobe -r loop && modprobe loop max_part=63 $(NOCOLOR)\n"
 	-modprobe -r loop && modprobe loop max_part=63
 
 3: dd
 dd:
-	@ printf "$(COLOR) mkdir -v ../$(MD-DIR-NAME) $(NOCOLOR)\n"
 	-mkdir -v ../$(MD-DIR-NAME)
-	@ -for COUNT in {1..$(MD-FILES-NUMBER)}; do \
+	-for COUNT in {1..$(MD-FILES-NUMBER)}; do \
 		echo $(MD-FILES-NAME)$$COUNT; \
-		printf "$(COLOR) dd if=/dev/null of=../$(MD-DIR-NAME)/$(MD-FILES-NAME)$$COUNT.img bs=1024 seek=$(MD-FILES-SIZE)' $(NOCOLOR)\n" \
 		dd if=/dev/null of=../$(MD-DIR-NAME)/$(MD-FILES-NAME)$$COUNT.img bs=1024 seek=$(MD-FILES-SIZE); \
-		printf "\n"; \
 	done
-	@ printf "$(COLOR) ls -la ../$(MD-DIR-NAME) $(NOCOLOR)\n"
 	ls -la ../$(MD-DIR-NAME)
 
 4: losetup
 losetup:
 	-losetup -D
-	@ -for COUNT in {1..$(MD-FILES-NUMBER)}; do \
-		echo '> losetup -v /dev/loop$$COUNT ../$(MD-DIR-NAME)/$(MD-FILES-NAME)$$COUNT.img;' ; \
+	-for COUNT in {1..$(MD-FILES-NUMBER)}; do \
 		losetup -v /dev/loop$$COUNT ../$(MD-DIR-NAME)/$(MD-FILES-NAME)$$COUNT.img; \
 	done
 	losetup -a
