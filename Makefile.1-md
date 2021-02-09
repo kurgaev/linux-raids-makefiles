@@ -1,12 +1,22 @@
+## links:
 ## https://wiki.gentoo.org/wiki/LVM#Experimenting_with_LVM
 
-default: 1 2
+#VAR-NAME: var-data
 
-1: loop-module_load
-loop-module_load:
-	-modprobe -r loop && modprobe loop max_part=63
+default: help
+help:
+	clear
+	@ echo 'make COMMAND:'
+#	@ echo 'help 	 				- show help message'
+	@ echo '1 / loop-module_check	- check if "loop" module loaded'
+	@ echo '2 / loop-module_load	- load "loop" module'
+	@ echo ''
 
-2: loop-module_check
+1: loop-module_check
 loop-module_check:
 	-lsmod | grep loop
+
+2: loop-module_load
+loop-module_load:
+	-modprobe -r loop && modprobe loop max_part=63
 
