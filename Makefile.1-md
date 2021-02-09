@@ -1,1 +1,5 @@
-test
+1: module
+module:
+	modprobe -r loop && modprobe loop max_part=63
+	lsmod | grep loop
+
