@@ -9,11 +9,12 @@ MD-FILES-SIZE=2097152
 default: help
 help:
 	clear
-	@ echo 'make COMMAND:'
-#	@ echo 'help 	 				- show help message'
-	@ echo '1 / loop-module_check	- check if "loop" module loaded'
-	@ echo '2 / loop-module_load	- load "loop" module'
-	@ echo '3 / create_img_files	- creage image files'
+	@ echo 'help:'
+	@ echo 'make NUMBER (step number):'
+	@ echo '1	- check if "loop" module loaded'
+	@ echo '2	- load "loop" module'
+	@ echo '3	- create image files'
+	@ echo '4	- connect image files'
 	@ echo ''
 
 1: loop-module_check
@@ -34,3 +35,6 @@ create_img_files:
 	done
 	-ls -la ../$(MD-DIR-NAME)
 
+4: connect_img_files
+connect_img_files:
+	@ echo "connect_img_files"
