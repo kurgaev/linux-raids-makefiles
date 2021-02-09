@@ -1,5 +1,12 @@
-1: module
-module:
-	modprobe -r loop && modprobe loop max_part=63
-	lsmod | grep loop
+## https://wiki.gentoo.org/wiki/LVM#Experimenting_with_LVM
+
+default: 1 2
+
+1: loop-module_load
+loop-module_load:
+	-modprobe -r loop && modprobe loop max_part=63
+
+2: loop-module_check
+loop-module_check:
+	-lsmod | grep loop
 
