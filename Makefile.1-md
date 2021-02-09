@@ -18,7 +18,7 @@ help:
 	@ echo ''
 
 1:
-	-lsmod | grep loop
+	lsmod | grep loop
 
 2:
 	-modprobe -r loop && modprobe loop max_part=63
@@ -30,8 +30,10 @@ help:
 		dd if=/dev/null of=../$(MD-DIR-NAME)/$(MD-FILES-NAME)$$COUNT.img bs=1024 seek=$(MD-FILES-SIZE); \
 		echo ""; \
 	done
-	-ls -la ../$(MD-DIR-NAME)
+	ls -la ../$(MD-DIR-NAME)
 
 4:
-	@ echo "connect_img_files"
-
+	-for COUNT in {1..$(MD-FILES-NUMBER)}; do \
+		losetup /dev/loop$$COUNT ../$(MD-DIR-NAME)/$(MD-FILES-NAME)$$COUNT.img; \
+	done
+	losetup -a
