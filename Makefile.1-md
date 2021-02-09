@@ -17,16 +17,13 @@ help:
 	@ echo '4	- connect image files'
 	@ echo ''
 
-1: loop-module_check
-loop-module_check:
+1:
 	-lsmod | grep loop
 
-2: loop-module_load
-loop-module_load:
+2:
 	-modprobe -r loop && modprobe loop max_part=63
 
-3: create_img_files
-create_img_files:
+3:
 	-mkdir -v ../$(MD-DIR-NAME)
 	-for COUNT in {1..$(MD-FILES-NUMBER)}; do \
 		echo $(MD-FILES-NAME)$$COUNT; \
@@ -35,6 +32,6 @@ create_img_files:
 	done
 	-ls -la ../$(MD-DIR-NAME)
 
-4: connect_img_files
-connect_img_files:
+4:
 	@ echo "connect_img_files"
+
